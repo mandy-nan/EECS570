@@ -51,7 +51,7 @@ unittest: $(TEST_FILES)
 
 test-time: $(TOOL).so
 	test -p sim.fifo || mkfifo sim.fifo
-	/usr/bin/time --portability $(PWD)/$(SIM) --nondet --cores 1 --tosim-fifo $(PWD)/sim.fifo --statsfile $(PWD)/.stats-tmp.py &
+	./simple_test/exe --portability $(PWD)/$(SIM) --det-hb --cores 1 --tosim-fifo $(PWD)/sim.fifo --statsfile $(PWD)/.stats-tmp.py &
 	$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/sim.fifo -- /bin/ls &
 
 test-parsec: $(TOOL).so
@@ -63,7 +63,7 @@ test-parsec: $(TOOL).so
 	$(PWD)/$(SIM) --nondet --tosim-fifo $(PWD)/fifo.nondet --ignore-stack --cores 8 --statsfile $(PWD)/.stats-parsec-nondet.py --scheme ParsecTest &
 	$(PWD)/$(SIM) --det-tso --tosim-fifo $(PWD)/fifo.det-tso --ignore-stack --cores 8 --statsfile $(PWD)/.stats-parsec-tso.py --scheme ParsecTest &
 	$(PWD)/$(SIM) --det-hb --tosim-fifo $(PWD)/fifo.det-hb --ignore-stack --cores 8 --statsfile $(PWD)/.stats-parsec-hb.py --scheme ParsecTest &
-	$(HOME)/recherche/parsec/bin/parsecmgmt -p streamcluster -c gcc-hooks -i simdev -n 2 -s "$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/fifo.frontend -cores 8 --" -a run 2>&1 | tee parsec.log &
+	$(HOME)/parsec/bin/parsecmgmt -p streamcluster -c gcc-hooks -i simdev -n 2 -s "$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/fifo.frontend -cores 8 --" -a run 2>&1 | tee parsec.log &
 
 wc:
 	wc -l *.[hc]pp cache/*.[hc]pp
