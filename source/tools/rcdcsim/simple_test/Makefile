@@ -15,7 +15,7 @@ CFLAGS = -c -pedantic -std=c++11 -Wall -Wextra -g
 LFLAGS = -pedantic -Wall -Wextra -ldl -pthread
 
 #OBJS = disk.o Foo.o
-OBJS = thread.o disk.o libcpu.a
+OBJS = thread.o example.o libcpu.a
 
 PROG = exe
 
@@ -31,9 +31,9 @@ $(PROG): $(OBJS)
 
 	$(CC) $(LFLAGS) $(OBJS) -o $(PROG)
 
-disk.o: disk.cc thread.h
+example.o: example.cc thread.h
 
-	$(CC) $(CFLAGS) disk.cc
+	$(CC) $(CFLAGS) example.cc
 
 #Foo.o: Foo.cpp Foo.h FooImpl.h
 #
