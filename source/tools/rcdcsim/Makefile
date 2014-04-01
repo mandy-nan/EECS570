@@ -49,10 +49,13 @@ run-unittests: unittest
 unittest: $(TEST_FILES)
 	$(CXX) $(CXXFLAGS) $(PIN_CXXFLAGS) -lboost_unit_test_framework -o $@ $^
 
+	#./simple_test/exe --portability $(PWD)/$(SIM) --det-hb --cores 1 --tosim-fifo $(PWD)/sim.fifo --statsfile $(PWD)/.stats-tmp.py &
+	#$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/sim.fifo -- /bin/ls &
 test-time: $(TOOL).so
-	test -p sim.fifo || mkfifo sim.fifo
-	./simple_test/exe --portability $(PWD)/$(SIM) --det-hb --cores 1 --tosim-fifo $(PWD)/sim.fifo --statsfile $(PWD)/.stats-tmp.py &
-	$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/sim.fifo -- /bin/ls &
+	test -p fifo.frontend || mkfifo fifo.frontend &
+	$(PWD)/$(SIM) --det-tso --tosim-fifo $(PWD)/fifo.frontend --ignore-stack --cores 2 --statsfile $(PWD)/.stats-tmp-tso.py&
+	./simple_test/exe --portability &
+	$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/fifo.frontend -cores 2 -- /bin/ls &
 
 test-parsec: $(TOOL).so
 	test -p fifo.det-hb || mkfifo fifo.det-hb
