@@ -24,7 +24,8 @@ LIBS =
 
 # boost_lockfree code is from: "git clone git://tim.klingt.org/boost_lockfree.git"
 
-all: $(TOOL).so $(SIM) pipefork unittest
+#all: $(TOOL).so $(SIM) pipefork unittest
+all: $(TOOL).so $(SIM) pipefork
 
 ## build rules
 
@@ -51,9 +52,15 @@ unittest: $(TEST_FILES)
 
 	#./simple_test/exe --portability $(PWD)/$(SIM) --det-hb --cores 1 --tosim-fifo $(PWD)/sim.fifo --statsfile $(PWD)/.stats-tmp.py &
 	#$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/sim.fifo -- /bin/ls &
-test-time: $(TOOL).so
-	test -p fifo.frontend || mkfifo fifo.frontend &
-	$(PWD)/$(SIM) --det-tso --tosim-fifo $(PWD)/fifo.frontend --ignore-stack --cores 2 --statsfile $(PWD)/.stats-tmp-tso.py&
+test-tso: $(TOOL).so
+	test -p fifo.nondet || mkfifo fifo.nondet
+	test -p fifo.det-hb || mkfifo fifo.det-hb
+	test -p fifo.det-tso || mkfifo fifo.det-tso
+	test -p fifo.frontend || mkfifo fifo.frontend 
+	$(PWD)/pipefork $(PWD)/fifo.frontend $(PWD)/fifo.det-hb $(PWD)/fifo.det-tso $(PWD)/fifo.nondet &
+	$(PWD)/$(SIM) --nondet --tosim-fifo $(PWD)/fifo.nondet --ignore-stack --cores 2 --statsfile $(PWD)/.stats-tmp-nondet.py&
+	$(PWD)/$(SIM) --det-tso --tosim-fifo $(PWD)/fifo.det-hb --ignore-stack --cores 2 --statsfile $(PWD)/.stats-tmp-tso.py&
+	$(PWD)/$(SIM) --det-hb --tosim-fifo $(PWD)/fifo.det-tso --ignore-stack --cores 2 --statsfile $(PWD)/.stats-tmp-hb.py&
 	./simple_test/exe --portability &
 	$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/fifo.frontend -cores 2 -- /bin/ls &
 
@@ -72,7 +79,7 @@ wc:
 	wc -l *.[hc]pp cache/*.[hc]pp
 
 clean:
-	-rm -f *.o cache/*.o test/*.o $(TOOL).so $(SIM) pipefork *.out *.tested *.failed *.d cache/*.d test/*.d unittest
+	-rm -f *.o cache/*.o test/*.o $(TOOL).so $(SIM) pipefork *.out *.tested *.failed *.d cache/*.d test/*.d unittest .st* fifo.*
 over: clean all
 
 -include *.d test/*.d
