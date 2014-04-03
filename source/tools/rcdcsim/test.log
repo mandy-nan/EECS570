@@ -1,0 +1,5 @@
+parent called with arg 100
+parent waiting for child to run
+child run with message test message, setting child_done = 1
+parent finishing
+All CPUs suspended.  Exiting.

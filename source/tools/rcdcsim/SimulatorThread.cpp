@@ -452,7 +452,7 @@ int main(int argc, char** argv) {
 
   // each stat is dumped as a Python dictionary object
   stringstream prefix;
-  prefix << "{'RCDCStat':True, ";
+/*  prefix << "{'RCDCStat':True, ";
 
   prefix << "'determinismStrategy': '" << nameOfDetStrategy() << "', ";
   prefix << "'quantumSize': '" << (s_knobs[KnobQuantumSize].as<unsigned>()/1000) << "k', ";
@@ -477,7 +477,7 @@ int main(int argc, char** argv) {
 
   prefix << "'useL3': " << pyOfBool( s_knobs.count(KnobUseL3) ) << ", ";
   prefix << "'l3Assoc': " << s_knobs[KnobL3Assoc].as<unsigned>() << ", ";
-  prefix << "'l3Size': " << s_knobs[KnobL3Size].as<unsigned>() << ", ";
+  prefix << "'l3Size': " << s_knobs[KnobL3Size].as<unsigned>() << ", ";*/
 
   // actual stat value goes here
   string suffix = "}\n";

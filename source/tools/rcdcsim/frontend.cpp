@@ -32,6 +32,20 @@ KNOB<string> KnobToSimulatorFifo( KNOB_MODE_WRITEONCE, "pintool", "tosim-fifo",
 KNOB<unsigned> KnobCores( KNOB_MODE_WRITEONCE, "pintool", "cores",
                           "1", "Number of simulated cores." );
 
+// Print a memory read record
+VOID RecordMemRead(VOID * ip, VOID * addr)
+{
+    printf("%p: R %p\n", ip, addr);
+}
+
+
+// Print a memory write record
+VOID RecordMemWrite(VOID * ip, VOID * addr)
+{
+    printf("%p: W %p\n", ip, addr);
+}
+
+
 /** for interacting with the message threads */
 static PIN_THREAD_UID s_IOThreadId;
 
@@ -73,6 +87,43 @@ BOOL isLikeLockRelease( const char *rtnName ) {
       strstr( rtnName, "pthread_cond_signal" ) || //
       strstr( rtnName, "RELEASE_FENCE" ); // custom hook for canneal
 }
+
+// Is called for every instruction and instruments reads and writes
+VOID Instruction(INS ins, VOID *v)
+{
+    // Instruments memory accesses using a predicated call, i.e.
+    // the instrumentation is called iff the instruction will actually be executed.
+    //
+    // The IA-64 architecture has explicitly predicated instructions. 
+    // On the IA-32 and Intel(R) 64 architectures conditional moves and REP 
+    // prefixed instructions appear as predicated instructions in Pin.
+    UINT32 memOperands = INS_MemoryOperandCount(ins);
+
+    // Iterate over each memory operand of the instruction.
+    for (UINT32 memOp = 0; memOp < memOperands; memOp++)
+    {
+        if (INS_MemoryOperandIsRead(ins, memOp))
+        {
+            INS_InsertPredicatedCall(
+                ins, IPOINT_BEFORE, (AFUNPTR)RecordMemRead,
+                IARG_INST_PTR,
+                IARG_MEMORYOP_EA, memOp,
+                IARG_END);
+        }
+        // Note that in some architectures a single memory operand can be 
+        // both read and written (for instance incl (%eax) on IA-32)
+        // In that case we instrument it once for read and once for write.
+        if (INS_MemoryOperandIsWritten(ins, memOp))
+        {
+            INS_InsertPredicatedCall(
+                ins, IPOINT_BEFORE, (AFUNPTR)RecordMemWrite,
+                IARG_INST_PTR,
+                IARG_MEMORYOP_EA, memOp,
+                IARG_END);
+        }
+    }
+}
+
 
 VOID instrumentImage( IMG img, VOID *v ) {
 
@@ -220,6 +271,9 @@ int main( int argc, char *argv[] ) {
 
   IMG_AddInstrumentFunction( instrumentImage, NULL );
   TRACE_AddInstrumentFunction( instrumentTrace, NULL );
+  cerr << " Before this function\n";
+  //INS_AddInstrumentFunction(Instruction, 0);
+  cerr << " After this function\n";
 
   PIN_AddThreadStartFunction( threadBegin, NULL );
   PIN_AddThreadFiniFunction( threadEnd, NULL );

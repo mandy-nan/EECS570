@@ -1,8 +1,7 @@
 #include <iostream>
-#include "thread.h"
 
 using namespace std;
-
+/*
 mutex mutex1;
 cv cv1;
 
@@ -31,10 +30,11 @@ void parent(void *a)
 	cout << "parent finishing" << endl;
 	mutex1.unlock();
 }
-
+*/
 int main()
 {
 	//cout<< "Hello World";
-	cpu::boot((thread_startfunc_t) parent, (void *) 100, 0);
+//	cpu::boot((thread_startfunc_t) parent, (void *) 100, 0);
+	cout << "Hello World!!!" << endl;
 }
 
