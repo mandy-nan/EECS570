@@ -1,0 +1,48 @@
+'cpuid': 0, 'Runtime': 9354068}
+'cpuid': 0, 'TotalQuantumImbalance': 9332417}
+'cpuid': 0, 'QuantumRounds': 4054}
+'cpuid': 0, 'TotalQuanta': 4031}
+'cpuid': 0, 'QuantumRoundCommits': 4023}
+'cpuid': 0, 'AverageInsnsPerQuantum': 1006}
+'cpuid': 0, 'AverageCyclesPerQuantum': 2325}
+'cpuid': 0, 'SyncInducedRoundBoundaries': 6}
+'cpuid': 0, 'StoreBufferOverflows': 0}
+'cpuid': 0, 'InsnCountInducedRoundBoundaries': 4025}
+'cpuid': 0, 'numReadHits': 896384}
+'cpuid': 0, 'numReadRemoteHits': 113}
+'cpuid': 0, 'numReadMisses': 31552}
+'cpuid': 0, 'numWriteHits': 329123}
+'cpuid': 0, 'numWriteRemoteHits': 57}
+'cpuid': 0, 'numWriteMisses': 2296}
+'cpuid': 0, 'numUpgradeMisses': 57}
+'cpuid': 0, 'numTotalMemoryAccesses': 1259582}
+'cpuid': 0, 'numL1Evictions': 0}
+'cpuid': 0, 'numL2Evictions': 0}
+'cpuid': 0, 'numDirtyDataEvictions': 0}
+'cpuid': 0, 'numSyncSources': 0}
+'cpuid': 0, 'numSyncTotalSinks': 0}
+'cpuid': 0, 'numSyncSourcelessSinks': 0}
+'cpuid': 0, 'numSyncUnmatchedSinks': 0}
+'cpuid': 1, 'numReadHits': 4563}
+'cpuid': 1, 'numReadRemoteHits': 188}
+'cpuid': 1, 'numReadMisses': 113}
+'cpuid': 1, 'numWriteHits': 2554}
+'cpuid': 1, 'numWriteRemoteHits': 37}
+'cpuid': 1, 'numWriteMisses': 40}
+'cpuid': 1, 'numUpgradeMisses': 26}
+'cpuid': 1, 'numTotalMemoryAccesses': 7521}
+'cpuid': 1, 'numL1Evictions': 0}
+'cpuid': 1, 'numL2Evictions': 0}
+'cpuid': 1, 'numDirtyDataEvictions': 0}
+'cpuid': 1, 'numSyncSources': 0}
+'cpuid': 1, 'numSyncTotalSinks': 0}
+'cpuid': 1, 'numSyncSourcelessSinks': 0}
+'cpuid': 1, 'numSyncUnmatchedSinks': 0}
+'SimulationRunningTimeMinutes': 0.1}
+'maxLiveThreads': 3}
+'numSpawnedThreads': 4}
+'numStackAccesses': 593501}
+'numTotalInstructions': 4055722}
+'causalityInducedEventDelays': 519}
+'unprocessedEvents': 0}
+'forcedCommits': 0}

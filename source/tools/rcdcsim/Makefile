@@ -53,7 +53,7 @@ unittest: $(TEST_FILES)
 	#./simple_test/exe --portability $(PWD)/$(SIM) --det-hb --cores 1 --tosim-fifo $(PWD)/sim.fifo --statsfile $(PWD)/.stats-tmp.py &
 	#$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/sim.fifo -- /bin/ls &
 
-test-non: $(TOOL).so
+test: $(TOOL).so
 	test -p fifo.frontend || mkfifo fifo.frontend 
 	test -p fifo.nondet || mkfifo fifo.nondet
 	test -p fifo.det-tso || mkfifo fifo.det-tso
