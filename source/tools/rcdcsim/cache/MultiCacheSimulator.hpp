@@ -43,6 +43,8 @@ public:
   unsigned m_quantumSize;
   bool m_smartQuantumBuilding;
 
+  
+  int core_id;		//**********************************************Mandy: for security check
 
 private:
   const int LINE_SIZE;
@@ -82,6 +84,7 @@ public:
                          NUM_CORES( numCaches ),
                          m_simulateTSO( false ),
                          m_simulateHB( false ),
+			 //core_id(0),		//**********************************************Mandy: for security check
                          m_quantumSize( 0 ),
                          m_smartQuantumBuilding( false ),
 
@@ -238,7 +241,8 @@ public:
       // check to see if I'm the last one in
       if ( weAreDoneWithQuantumRound() ) finishQuantumRound();
 
-    } else if ( m_simulateHB ) {
+    //} else if ( m_simulateHB ) {
+    } else {
       switch ( op ) {
       case SYNC_SINK: {
         map<uint64_t,uint64_t>::iterator i = m_roundOfSyncSource.find( syncObject );

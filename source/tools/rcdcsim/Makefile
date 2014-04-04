@@ -50,19 +50,16 @@ run-unittests: unittest
 unittest: $(TEST_FILES)
 	$(CXX) $(CXXFLAGS) $(PIN_CXXFLAGS) -lboost_unit_test_framework -o $@ $^
 
-	#./simple_test/exe --portability $(PWD)/$(SIM) --det-hb --cores 1 --tosim-fifo $(PWD)/sim.fifo --statsfile $(PWD)/.stats-tmp.py &
-	#$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/sim.fifo -- /bin/ls &
 
+	#$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/fifo.frontend -cores 2 --  simple_test/mnan/exe 3 1000&
 test: $(TOOL).so
 	test -p fifo.frontend || mkfifo fifo.frontend 
-	test -p fifo.nondet || mkfifo fifo.nondet
-	test -p fifo.det-tso || mkfifo fifo.det-tso
+	test -p fifo.det-non || mkfifo fifo.det-non
 	test -p fifo.det-hb || mkfifo fifo.det-hb
-	$(PWD)/pipefork $(PWD)/fifo.frontend $(PWD)/fifo.det-hb $(PWD)/fifo.det-tso $(PWD)/fifo.nondet &
-	$(PWD)/$(SIM) --nondet --tosim-fifo $(PWD)/fifo.nondet --ignore-stack --cores 2 --statsfile $(PWD)/non.out&
-	$(PWD)/$(SIM) --det-tso --tosim-fifo $(PWD)/fifo.det-tso --ignore-stack --cores 2 --statsfile $(PWD)/det-tso.out&
-	$(PWD)/$(SIM) --det-hb --tosim-fifo $(PWD)/fifo.det-hb --ignore-stack --cores 2 --statsfile $(PWD)/hb.out&
-	$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/fifo.frontend -cores 2 --  simple_test/mnan/exe 3 1000 &
+	$(PWD)/pipefork $(PWD)/fifo.frontend $(PWD)/fifo.det-non $(PWD)/fifo.det-hb &
+	$(PWD)/$(SIM) --nondet --tosim-fifo $(PWD)/fifo.det-non --ignore-stack --cores 2 --statsfile $(PWD)/det-non.out&
+	$(PWD)/$(SIM) --det-hb --tosim-fifo $(PWD)/fifo.det-hb --ignore-stack --cores 2 --statsfile $(PWD)/det-hb.out&
+	$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/fifo.frontend -cores 2 --  simple_test/mnan/exe 3 1000&
 
 test-tso: $(TOOL).so
 	test -p fifo.det-tso || mkfifo fifo.det-tso
@@ -96,6 +93,16 @@ wc:
 
 clean:
 	-rm -f *.o cache/*.o test/*.o $(TOOL).so $(SIM) pipefork *.out *.tested *.failed *.d cache/*.d test/*.d unittest .st* fifo.*
+
+	#grep TSO output.out > tso.out
+	#perl -p -i -w -e 's/TSO//g' tso.out
+dmp_chk:
+	grep HB output.out > hb.out
+	grep NON output.out > non.out
+	perl -p -i -w -e 's/NON-DET//g' non.out
+	perl -p -i -w -e 's/HB//g' hb.out
+	diff non.out hb.out	 
+
 over: clean all
 
 -include *.d test/*.d

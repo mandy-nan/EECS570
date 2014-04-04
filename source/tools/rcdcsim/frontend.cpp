@@ -271,9 +271,7 @@ int main( int argc, char *argv[] ) {
 
   IMG_AddInstrumentFunction( instrumentImage, NULL );
   TRACE_AddInstrumentFunction( instrumentTrace, NULL );
-  cerr << " Before this function\n";
   //INS_AddInstrumentFunction(Instruction, 0);
-  cerr << " After this function\n";
 
   PIN_AddThreadStartFunction( threadBegin, NULL );
   PIN_AddThreadFiniFunction( threadEnd, NULL );

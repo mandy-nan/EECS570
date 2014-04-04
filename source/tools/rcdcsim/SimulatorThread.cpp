@@ -273,24 +273,24 @@ void processEvents(MultiCacheSimulator<RCDCLine, uint64_t>* sim, ifstream& event
 				sim->setLiveThreads( currentLiveThreads );
 				s_numSpawnedThreads++;
 				s_maxLiveThreads = max( s_maxLiveThreads, currentLiveThreads );
-				if ( sim->m_simulateHB){
-					while(prt == 1);
-					prt = 1;
-					printf("---Start Thread in HB core for thread_%d\n",e.m_tid); 
-					prt = 0;
-				}
-				else if ( sim->m_simulateTSO){
-					while(prt == 1);
-					prt = 1;
-					printf("---Start Thread in TSO core for thread_%d\n",e.m_tid); 
-					prt = 0;
-				}
-				else{
-					while(prt == 1);
-					prt = 1;
-					printf("---Start Thread in NON-DET core for thread_%d\n",e.m_tid); 
-					prt = 0;
-				}
+				//if ( sim->m_simulateHB){
+				//	while(prt == 1);
+				//	prt = 1;
+				//	printf("---Start Thread in HB core for thread_%d\n",e.m_tid); 
+				//	prt = 0;
+				//}
+				//else if ( sim->m_simulateTSO){
+				//	while(prt == 1);
+				//	prt = 1;
+				//	printf("---Start Thread in TSO core for thread_%d\n",e.m_tid); 
+				//	prt = 0;
+				//}
+				//else{
+				//	while(prt == 1);
+				//	prt = 1;
+				//	printf("---Start Thread in NON-DET core for thread_%d\n",e.m_tid); 
+				//	prt = 0;
+				//}
 				break;
 
 			case THREAD_FINISH:
@@ -304,14 +304,54 @@ void processEvents(MultiCacheSimulator<RCDCLine, uint64_t>* sim, ifstream& event
 				}
 				break;
 
-			case THREAD_BLOCKED:
+			case THREAD_BLOCKED:{
 				//cerr << "Block Thread " << e.m_tid << endl;
+				//if ( sim->m_simulateHB){
+				//	while(prt == 1);
+				//	prt = 1;
+				//	printf("---Block Thread in HB core for thread_%d\n",e.m_tid); 
+				//	prt = 0;
+				//}
+				//else if ( sim->m_simulateTSO){
+				//	while(prt == 1);
+				//	prt = 1;
+				//	printf("---Block Thread in TSO core for thread_%d\n",e.m_tid); 
+				//	prt = 0;
+				//}
+				//else{
+				//	while(prt == 1);
+				//	prt = 1;
+				//	printf("---Block Thread in NON-DET core for thread_%d\n",e.m_tid); 
+				//	prt = 0;
+				//}
 				sim->block( e.m_tid );
 				break;
+				}
+				
 			case THREAD_UNBLOCKED:
 				//cerr << "UnBlock Thread " << e.m_tid << endl;
+				{
+				if ( sim->m_simulateHB){
+					while(prt == 1);
+					prt = 1;
+					printf("---unBlock Thread in HB core for thread_%d\n",e.m_tid); 
+					prt = 0;
+				}
+				else if ( sim->m_simulateTSO){
+					while(prt == 1);
+					prt = 1;
+					printf("---unBlock Thread in TSO core for thread_%d\n",e.m_tid); 
+					prt = 0;
+				}
+				else{
+					while(prt == 1);
+					prt = 1;
+					printf("---unBlock Thread in NON-DET core for thread_%d\n",e.m_tid); 
+					prt = 0;
+				}
 				sim->unblock( e.m_tid );
 				break;
+				}
 
 			case MEMORY_ALLOCATION:
 				// NOP for now
@@ -339,7 +379,9 @@ void processEvents(MultiCacheSimulator<RCDCLine, uint64_t>* sim, ifstream& event
 						  break;
 			case MEMORY_WRITE:
 						  sim->cacheWrite( e.m_tid, e.m_addr, e.m_memOpSize, usesStoreBuffer( e ) );
+
 						  break;
+
 
 			case BASIC_BLOCK:
 						  s_insnsExecuted += e.m_insnCount;
@@ -392,6 +434,7 @@ int main(int argc, char** argv) {
 		// everything below are simulator parameters
 
 		(KnobCores, knob::value<unsigned>()->default_value(8), "number of cores to simulate")
+		//(KnobCoreId, knob::value<unsigned>()->default_value(0),"Core ID of simulation." )
 
 		(KnobIgnoreStackRefs, "Ignore stack accesses." )
 
@@ -453,6 +496,7 @@ int main(int argc, char** argv) {
 	SMPCache<RCDCLine, uint64_t>::cache_iter_t it;
 	sim->m_simulateHB = s_knobs.count(KnobHB);
 	sim->m_simulateTSO = s_knobs.count(KnobTSO);
+  	//sim->core_id = s_knobs.count(KnobCoreId);	//**************************************Mandy: for security check
 	sim->m_quantumSize = s_knobs[KnobQuantumSize].as<unsigned>();
 	sim->m_smartQuantumBuilding = s_knobs.count(KnobSmartQuantumBuilding);
 	for ( it = sim->m_allCaches.begin(); it != sim->m_allCaches.end(); it++ ) {

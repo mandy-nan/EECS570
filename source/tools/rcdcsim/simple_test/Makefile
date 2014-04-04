@@ -27,7 +27,7 @@ default:
 
 real: $(PROG)
 
-$(PROG): $(OBJS)
+#$(PROG): $(OBJS)
 
 	$(CC) $(LFLAGS) $(OBJS) -o $(PROG)
 
