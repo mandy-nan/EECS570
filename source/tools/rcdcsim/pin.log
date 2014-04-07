@@ -1,2 +1,2 @@
 Pin 2.10 kit 45445
-E:  Missing application name
+E: frontend.cpp:64: Invalid IARG_TYPE: IARG_MEMORY_VALUE for instruction at address: 0x3bce001156.

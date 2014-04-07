@@ -376,6 +376,9 @@ void processEvents(MultiCacheSimulator<RCDCLine, uint64_t>* sim, ifstream& event
 
 			case MEMORY_READ:
 						  sim->cacheRead( e.m_tid, e.m_addr, e.m_memOpSize, usesStoreBuffer( e ) );
+
+
+
 						  break;
 			case MEMORY_WRITE:
 						  sim->cacheWrite( e.m_tid, e.m_addr, e.m_memOpSize, usesStoreBuffer( e ) );
