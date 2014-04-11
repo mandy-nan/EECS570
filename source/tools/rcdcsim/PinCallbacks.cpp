@@ -296,16 +296,16 @@ void startBasicBlock( THREADID tid, CONTEXT* ctxt, UINT32 insnCount ) {
 }
 void memOp( THREADID tid, UINT32 pos, ADDRINT addr, UINT32 size, BOOL isRead,
             BOOL isStackRef ) {
-		  ADDRINT read;
-		  ADDRINT write;
-		  if(isRead){
-		  PIN_SafeCopy(&read,&addr,sizeof(ADDRINT));
-		  std::cout << "load value:	" << read  << "	address:	" << addr << endl;
-		  } 
-		  else{
-		  PIN_SafeCopy(&write,&addr,sizeof(ADDRINT));
-		  std::cout << "store value:	" << write << "	address:	" << addr << endl; 
-		  }	
+		  //ADDRINT read;
+		  //ADDRINT write;
+		  //if(isRead){
+		  //PIN_SafeCopy(&read,&addr,sizeof(ADDRINT));
+		  // std::cout << "load value:	" << read  << "	address:	" << addr << endl;
+		  //} 
+		  //else{
+		  //PIN_SafeCopy(&write,&addr,sizeof(ADDRINT));
+		  //std::cout << "store value:	" << write << "	address:	" << addr << endl; 
+		  //}	
 		  addEvent( Event::MemoryEvent( tid, isRead ? MEMORY_READ : MEMORY_WRITE, addr, size, isStackRef ) );
 
 }

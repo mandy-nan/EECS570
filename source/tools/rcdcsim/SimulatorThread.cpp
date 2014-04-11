@@ -331,24 +331,24 @@ void processEvents(MultiCacheSimulator<RCDCLine, uint64_t>* sim, ifstream& event
 			case THREAD_UNBLOCKED:
 				//cerr << "UnBlock Thread " << e.m_tid << endl;
 				{
-				if ( sim->m_simulateHB){
-					while(prt == 1);
-					prt = 1;
-					printf("---unBlock Thread in HB core for thread_%d\n",e.m_tid); 
-					prt = 0;
-				}
-				else if ( sim->m_simulateTSO){
-					while(prt == 1);
-					prt = 1;
-					printf("---unBlock Thread in TSO core for thread_%d\n",e.m_tid); 
-					prt = 0;
-				}
-				else{
-					while(prt == 1);
-					prt = 1;
-					printf("---unBlock Thread in NON-DET core for thread_%d\n",e.m_tid); 
-					prt = 0;
-				}
+				//if ( sim->m_simulateHB){
+				//	while(prt == 1);
+				//	prt = 1;
+				//	printf("---unBlock Thread in HB core for thread_%d\n",e.m_tid); 
+				//	prt = 0;
+				//}
+				//else if ( sim->m_simulateTSO){
+				//	while(prt == 1);
+				//	prt = 1;
+				//	printf("---unBlock Thread in TSO core for thread_%d\n",e.m_tid); 
+				//	prt = 0;
+				//}
+				//else{
+				//	while(prt == 1);
+				//	prt = 1;
+				//	printf("---unBlock Thread in NON-DET core for thread_%d\n",e.m_tid); 
+				//	prt = 0;
+				//}
 				sim->unblock( e.m_tid );
 				break;
 				}

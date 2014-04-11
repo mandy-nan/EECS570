@@ -32,6 +32,7 @@ along with RCDC-sim.  If not, see <http://www.gnu.org/licenses/>.
 #include <list>
 #include <deque>
 #include <stdint.h>
+#include <iostream>
 
 using namespace std;
 
@@ -187,17 +188,47 @@ protected:
 
     list<Line*>& set = m_sets.at( index(blockAddress) );
 
+    if(!m_nextCache)
+	    cout << "set size before remove for the first eviction: " << set.size() << endl; 
+
     Line* toEvict = m_callbacks->eviction( set, m_levelInHierarchy );
+
+    if(!m_nextCache)
+	    cout << "set size before remove for the first eviction: " << set.size() << endl; 
+
     set.remove( toEvict );
 
+    if(!m_nextCache)
+	    cout << "set size after remove for the first eviction: " << set.size() << endl; 
+	    //cout << "set size after remove the first eviction: " << set.size() << endl; 
     // NB: don't let eviction handler see the incoming line
     set.push_front( incoming );
+
+    if(!m_nextCache){
+	    cout << "set size after add the first eviction: " << set.size() << endl; 
+	    assert(set.size()==m_assoc);
+    }
 
     if ( m_nextCache ) {
       uint64_t lruBlockAddress = (toEvict->tag() << m_indexBits) + index(blockAddress);
       m_nextCache->evictedFromLowerCache( toEvict, lruBlockAddress );
     } else {
-      delete toEvict;
+//New Mandy****************************************************************
+    int index_num_max = 1 << (m_indexBits+1) -1;
+    int index_num = index(blockAddress);
+    index_num = (index_num + 1)%index_num_max;
+    set = m_sets.at(index_num);
+
+    toEvict = m_callbacks->eviction( set, m_levelInHierarchy );
+    set.remove( toEvict );
+    set.push_front( incoming );
+    cout << "set size after add the second eviction: " << set.size() << endl; 
+    assert(set.size()==m_assoc);
+    delete toEvict;
+    //cout << "set size after remove the second eviction: " << set.size() << endl; 
+    //cout << "set size after add the second eviction: " << set.size() << endl; 
+    //delete toEvict_n;
+//New Mandy****************************************************************
     }
   }
 
@@ -210,6 +241,10 @@ protected:
    * @return the level of the cache hierarchy where the hit occurred */
   CacheResponse access(const uint64_t address, Line*& l1Line, Line*& higherLevelHit) {
     list<Line*>& set = m_sets.at( index(address) );
+    if(set.size() != m_assoc){
+	cout << "the faulty set_size is: " << set.size() << endl;
+	cout << "m_assoc is: " << m_assoc << endl;
+    }
     assert( set.size() == m_assoc );
 
     // search this cache

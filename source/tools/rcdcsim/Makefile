@@ -65,7 +65,7 @@ test-tso: $(TOOL).so
 	test -p fifo.det-tso || mkfifo fifo.det-tso
 	test -p fifo.frontend || mkfifo fifo.frontend 
 	$(PWD)/pipefork $(PWD)/fifo.frontend $(PWD)/fifo.det-tso &
-	$(PWD)/$(SIM) --det-tso --tosim-fifo $(PWD)/fifo.det-tso --ignore-stack --cores 1 --statsfile $(PWD)/tso.txt&
+	$(PWD)/$(SIM) --det-tso --tosim-fifo $(PWD)/fifo.det-tso --ignore-stack --cores 2 --use-l2 --use-l3 --statsfile $(PWD)/tso.txt&
 	./simple_test/exe --portability &
 	$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/fifo.frontend -cores 1 -- /bin/ls &
 
@@ -73,9 +73,8 @@ test-hb: $(TOOL).so
 	test -p fifo.det-hb || mkfifo fifo.det-hb
 	test -p fifo.frontend || mkfifo fifo.frontend 
 	$(PWD)/pipefork $(PWD)/fifo.frontend $(PWD)/fifo.det-hb &
-	$(PWD)/$(SIM) --det-hb --tosim-fifo $(PWD)/fifo.det-hb --ignore-stack --cores 1 --statsfile $(PWD)/hb.txt&
-	./simple_test/exe --portability &
-	$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/fifo.frontend -cores 1 -- /bin/ls &
+	$(PWD)/$(SIM) --det-hb --tosim-fifo $(PWD)/fifo.det-hb --ignore-stack --cores 2 --use-l2 --use-l3 --statsfile $(PWD)/hb.txt&
+	$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/fifo.frontend -cores 2 --  simple_test/mnan/exe 3 1000&
 
 test-parsec: $(TOOL).so
 	test -p fifo.det-hb || mkfifo fifo.det-hb
