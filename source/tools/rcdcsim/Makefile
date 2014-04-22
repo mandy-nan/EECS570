@@ -73,8 +73,8 @@ test-hb: $(TOOL).so
 	test -p fifo.det-hb || mkfifo fifo.det-hb
 	test -p fifo.frontend || mkfifo fifo.frontend 
 	$(PWD)/pipefork $(PWD)/fifo.frontend $(PWD)/fifo.det-hb &
-	$(PWD)/$(SIM) --det-hb --tosim-fifo $(PWD)/fifo.det-hb --ignore-stack --cores 2 --use-l2 --use-l3 --statsfile $(PWD)/hb.txt&
-	$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/fifo.frontend -cores 2 --  simple_test/mnan/exe 3 1000&
+	$(PWD)/$(SIM) --det-hb --tosim-fifo $(PWD)/fifo.det-hb --ignore-stack --cores 8 --use-l2 --use-l3 --statsfile $(PWD)/hb.txt&
+	$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/fifo.frontend -cores 8 --  simple_test/mnan/exe 3 1000&
 
 test-parsec: $(TOOL).so
 	test -p fifo.det-hb || mkfifo fifo.det-hb
