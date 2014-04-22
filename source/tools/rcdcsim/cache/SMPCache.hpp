@@ -78,8 +78,8 @@ public:
   static const unsigned L2_HIT_LATENCY = 10;
   static const unsigned REMOTE_HIT_LATENCY = 15;
   static const unsigned L3_HIT_LATENCY = 35;
-  //static const unsigned MEMORY_ACCESS_LATENCY = 120;
-  static const unsigned MEMORY_ACCESS_LATENCY = 121;
+  static const unsigned MEMORY_ACCESS_LATENCY = 120;
+  //static const unsigned MEMORY_ACCESS_LATENCY = 121;
 
   int CPUId;
 
