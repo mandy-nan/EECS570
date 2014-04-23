@@ -78,8 +78,8 @@ public:
   static const unsigned L2_HIT_LATENCY = 10;
   static const unsigned REMOTE_HIT_LATENCY = 15;
   static const unsigned L3_HIT_LATENCY = 35;
-  static const unsigned MEMORY_ACCESS_LATENCY = 120;
-  //static const unsigned MEMORY_ACCESS_LATENCY = 121;
+  //static const unsigned MEMORY_ACCESS_LATENCY = 120;
+  static const unsigned MEMORY_ACCESS_LATENCY = 121;
 
   int CPUId;
 
@@ -271,7 +271,7 @@ public:
     if ( rrs.providedData == false ) {
       // No Valid Read-Reply: Need to get this data from Memory
       numReadMisses++;
-      timeInMemoryHierarchy += MEMORY_ACCESS_LATENCY;
+      timeInMemoryHierarchy += MEMORY_ACCESS_LATENCY-1;
 
       /* NB: we always fetch from memory into Exclusive. */
       newMesiState = MESI_EXCLUSIVE;

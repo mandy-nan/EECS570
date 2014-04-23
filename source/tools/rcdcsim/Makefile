@@ -65,29 +65,29 @@ test-hb-2: $(TOOL).so
 	test -p fifo.det-hb || mkfifo fifo.det-hb
 	test -p fifo.frontend || mkfifo fifo.frontend 
 	$(PWD)/pipefork $(PWD)/fifo.frontend $(PWD)/fifo.det-hb &
-	$(PWD)/$(SIM) --det-hb --tosim-fifo $(PWD)/fifo.det-hb --ignore-stack --cores 2 --use-l2 --use-l3 --statsfile $(PWD)/hb.out&
-	$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/fifo.frontend -cores 2 -- simple_test/mnan/exe 2 100000&
+	$(PWD)/$(SIM) --det-hb --tosim-fifo $(PWD)/fifo.det-hb --ignore-stack --cores 1 --use-l2 --use-l3 --statsfile $(PWD)/hb_2.out&
+	$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/fifo.frontend -cores 1 -- simple_test/mnan/exe 2 100000&
 
 test-hb-4: $(TOOL).so
 	test -p fifo.det-hb || mkfifo fifo.det-hb
 	test -p fifo.frontend || mkfifo fifo.frontend 
 	$(PWD)/pipefork $(PWD)/fifo.frontend $(PWD)/fifo.det-hb &
-	$(PWD)/$(SIM) --det-hb --tosim-fifo $(PWD)/fifo.det-hb --ignore-stack --cores 4 --use-l2 --use-l3 --statsfile $(PWD)/hb.out&
-	$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/fifo.frontend -cores 4 -- simple_test/mnan/exe 4 100000&
+	$(PWD)/$(SIM) --det-hb --tosim-fifo $(PWD)/fifo.det-hb --ignore-stack --cores 2 --use-l2 --use-l3 --statsfile $(PWD)/hb_4.out&
+	$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/fifo.frontend -cores 2 -- simple_test/mnan/exe 4 100000&
 
 test-hb-8: $(TOOL).so
 	test -p fifo.det-hb || mkfifo fifo.det-hb
 	test -p fifo.frontend || mkfifo fifo.frontend 
 	$(PWD)/pipefork $(PWD)/fifo.frontend $(PWD)/fifo.det-hb &
-	$(PWD)/$(SIM) --det-hb --tosim-fifo $(PWD)/fifo.det-hb --ignore-stack --cores 8 --use-l2 --use-l3 --statsfile $(PWD)/hb.out&
-	$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/fifo.frontend -cores 8 -- simple_test/mnan/exe 8 100000&
+	$(PWD)/$(SIM) --det-hb --tosim-fifo $(PWD)/fifo.det-hb --ignore-stack --cores 4 --use-l2 --use-l3 --statsfile $(PWD)/hb_8.out&
+	$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/fifo.frontend -cores 4 -- simple_test/mnan/exe 8 100000&
 
 test-hb-16: $(TOOL).so
 	test -p fifo.det-hb || mkfifo fifo.det-hb
 	test -p fifo.frontend || mkfifo fifo.frontend 
 	$(PWD)/pipefork $(PWD)/fifo.frontend $(PWD)/fifo.det-hb &
-	$(PWD)/$(SIM) --det-hb --tosim-fifo $(PWD)/fifo.det-hb --ignore-stack --cores 16 --use-l2 --use-l3 --statsfile $(PWD)/hb.out&
-	$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/fifo.frontend -cores 16 -- simple_test/mnan/exe 16 100000&
+	$(PWD)/$(SIM) --det-hb --tosim-fifo $(PWD)/fifo.det-hb --ignore-stack --cores 8 --use-l2 --use-l3 --statsfile $(PWD)/hb_16.out&
+	$(PIN_ROOT)/pin $(PAUSE_TOOL_FLAG) -t $(PWD)/$(TOOL).so -tosim-fifo $(PWD)/fifo.frontend -cores 8 -- simple_test/mnan/exe 16 100000&
 
 test-parsec: $(TOOL).so
 	test -p fifo.det-hb || mkfifo fifo.det-hb
